@@ -28,6 +28,8 @@ armsPlayedTS = ThompsonSampling(environment, horizon, alpha0, beta0)
 armsPlayedBayesUCB = BayesUCB(environment, horizon, alpha0, beta0, c, HF)
 armsPlayedKLUCB = KLUCB(environment, horizon, c, HF)
 armsPlayedCPUCB = CPUCB(environment, horizon, c)
+armsPlayedMOSS = MOSS(environment, horizon)
+armsPlayedUCB = UCB(environment, horizon, c)
 
 """
 ------------------------------------------------------------------------------
@@ -39,3 +41,5 @@ plottingStochasticBandit(environment, armsPlayedTS, "Thompson Sampling")
 plottingStochasticBandit(environment, armsPlayedBayesUCB, "Bayes UCB")
 plottingStochasticBandit(environment, armsPlayedKLUCB, "KL UCB")
 plottingStochasticBandit(environment, armsPlayedCPUCB, "CP UCB")
+plottingStochasticBandit(environment, armsPlayedMOSS, "MOSS")
+plottingStochasticBandit(environment, armsPlayedUCB, "UCB")

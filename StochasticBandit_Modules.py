@@ -74,6 +74,12 @@ def UCB_receiveReward(ExpectedMeans, NbrPlayArms, reward, armToPlay, gain, armsP
     return ExpectedMeans, NbrPlayArms, gain, armsPlayed
 
 
+def UCB_recommendArm(ExpectedMeans, NbrPlayArms, t, c):
+    K = np.size(NbrPlayArms)
+    ucb = ExpectedMeans + np.sqrt(c*np.log(t)/NbrPlayArms)
+    return np.argmax(ucb)
+
+
 def TS_recommendArm(alphas, betas):
     theta = np.random.beta(alphas, betas) # Sampling the Beta distribution of each arm
     return np.argmax(theta)
@@ -82,6 +88,12 @@ def TS_recommendArm(alphas, betas):
 def CPUCB_recommendArm(ExpectedMeans, NbrPlayArms, t, c):
     (e, ic) = ssp.proportion_confint(np.floor(ExpectedMeans*NbrPlayArms), NbrPlayArms, 1/(t*np.log(t+1)**c), method = 'beta')
     return np.argmax(ic)
+
+
+def MOSS_recommendArm(ExpectedMeans, NbrPlayArms, horizon):
+    K = np.size(NbrPlayArms)
+    ucb = ExpectedMeans + np.sqrt(np.maximum(np.log(horizon/(K*NbrPlayArms)),0)/NbrPlayArms)
+    return np.argmax(ucb)
 
 def KLUCB_recommendArm(ExpectedMeans, NbrPlayArms, t, horizon, c, HF):
     indices = SearchingKLUCBIndex(ExpectedMeans, NbrPlayArms, t, horizon, c, HF)
@@ -103,5 +115,6 @@ def TS_receiveReward(alphas, betas, reward, armToPlay, gainTS, armsPlayed):
     else:
         betas[armToPlay] += 1
     return alphas, betas, gainTS, armsPlayed
-    
 
+def PlayBernoulliArm(arm):
+    return int ((np.random.uniform() < arm) == True)
