@@ -11,4 +11,4 @@ Implementation of 6 multi-amred bandit algorithmm for the stochastic Bernoulli e
 
 <ul>
  
- For a demo, please lauch the following script: demoStochasticBandit.m
+ For a demo, please launch the following script: demoStochasticBandit.m
