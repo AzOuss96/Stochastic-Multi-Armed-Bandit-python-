@@ -30,12 +30,12 @@ def play(MAB, environment, horizon):
         MAB.update(reward, armToPlay)
     return MAB.armsPlayed
 	
-def plottingStochasticBandit(environment, armsPlayed, titre):
+def plottingStochasticBandit(environment, armsPlayed, title):
     horizon = np.size(armsPlayed)
     regret = np.max(environment)*np.ones(horizon) - environment[armsPlayed]
     regret = np.cumsum(regret)
 
-    plt.plot(range(horizon),regret.tolist(),marker='.',label = titre)
+    plt.plot(range(horizon),regret.tolist(),marker='.',label = title)
     plt.legend(loc='lower right')
     plt.xlabel('Time step')
     plt.ylabel('cumulative regret')

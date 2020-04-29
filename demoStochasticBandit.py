@@ -3,7 +3,9 @@ import numpy as np
 from StochasticBandit_Policies import * 
 from utils import *
 import matplotlib.pyplot as plt
+import seaborn as sns
 
+sns.set()
 
 """
 ---------------------------------------------------------------------------------------------------------------------------

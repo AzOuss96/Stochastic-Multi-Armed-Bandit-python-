@@ -1,11 +1,9 @@
 from __future__ import division
 import numpy as np
-#from StochasticBandit_Modules import *
 from __future__ import division
-import numpy as np
 from scipy.stats import beta
 import statsmodels.stats.proportion as ssp
-from utils import DivKL, klIC
+from utils import klIC
 
 
 
@@ -67,9 +65,10 @@ class BayesUCB(ThompsonSampling):
 	
 	def choose_arm(self):
 		if self.HF:
-		    d = 1/(self.t * np.log(self.t+1)**self.c)
+		    T = self.t+1
 		else:
-		    d = 1/(self.t * np.log(self.horizon)**self.c)
+			T = self.horizon
+		d = 1/(self.t * np.log(T)**self.c)
 		theta = beta.ppf(1 - d , self.alphas, self.betas)
 		self.t += 1
 		return np.argmax(theta)
@@ -84,9 +83,10 @@ class KLUCB(UCB):
 	def SearchingKLUCBIndex(self):
 		p = self.ExpectedMeans
 		if self.HF:
-		    d = (np.log(self.t) + self.c * np.log(np.log(self.t + 1))) / self.NbrPlayArms
+		    T = self.t + 1 
 		else:
-		    d = (np.log(t) + self.c * np.log(np.log(self.horizon))) / self.NbrPlayArms
+			T = self.horizon
+	    d = (np.log(self.t) + self.c * np.log(np.log(T))) / self.NbrPlayArms
 		return klIC(p,d)
 
 	def choose_arm(self):
@@ -100,9 +100,13 @@ class CPUCB(UCB):
 		super().__init__(K, c)
 
 	def choose_arm(self):
-		 _, ic = ssp.proportion_confint(np.floor(self.ExpectedMeans * self.NbrPlayArms), self.NbrPlayArms, 1/ (self.t * np.log(self.t+1)**self.c), method = 'beta')
+		 _, ic = ssp.proportion_confint(np.floor(self.ExpectedMeans * self.NbrPlayArms),
+										self.NbrPlayArms, 
+										1/ (self.t * np.log(self.t+1)**self.c),
+										method = 'beta')
 		self.t += 1
 		return np.argmax(ic)
+
 
 class MOSS(UCB):
 	def __init__(self K, c, horizon):
